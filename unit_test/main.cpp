@@ -39,6 +39,13 @@ TEST(geometry, Normal_Vector) {
     
 }
 
+TEST(geometry, Normal_Vector_inverted) {
+    Point point({1, 0});
+    Point normal = NormalVector(point);
+    Point normal_inv = NormalVectorInverted(point);
+    EXPECT_EQ(normal_inv * normal, -1.0);
+}
+
 TEST(geometry, Line_meeting_point) {
     Straight line1({0,1}, {0,0});
     Straight line2({1,0}, {0,0});

@@ -40,6 +40,16 @@ Point NormalVector(Point point) {
     return Point();
 }
 
+//for 2D only, counterclock
+Point NormalVectorInverted(Point point) {
+    if(point.size() == 2) {
+        double y = -point[0];
+        double x = point[1];
+        return {x, y};
+    }
+    return Point();
+}
+
 template <class Type>
 bool InSight(const Type & point1, const Type & point2, std::vector<double> & direction, double cos_angle){
 //This function should receive cos(angle_of_vision / 2.0)

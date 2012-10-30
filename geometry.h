@@ -27,6 +27,7 @@ namespace geometry{
         return os<<")";
     }
 
+
     template <class Type>
         double EuclideanDistance(const Type & ac1,const Type & ac2);
     template <class Type>
@@ -41,6 +42,8 @@ namespace geometry{
 
     double operator*(Point lhs, Point rhs);
     Point NormalVector(Point point); //2D only
+    //Return a nomal vector, but in the inverted direction
+    Point NormalVectorInverted(Point point); //2D only
 
     class Straight {
         public:
