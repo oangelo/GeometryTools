@@ -9,12 +9,23 @@
 #include <numeric>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <ctime>
+#include <iterator>
 
 namespace geometry{
 
     typedef std::vector<double> Point;
     typedef std::vector<double> Vector;
+
+    template <class T>
+    std::ostream& operator<<(std::ostream&os, const std::vector<T>& v) 
+    { 
+        os<<"(";
+        std::copy(v.begin(), v.end() - 1, std::ostream_iterator<T>(os, ", "));
+        std::copy(v.end() - 1, v.end(), std::ostream_iterator<T>(os));
+        return os<<")";
+    }
 
     template <class Type>
         double EuclideanDistance(const Type & ac1,const Type & ac2);
@@ -25,6 +36,7 @@ namespace geometry{
     template <class Type>
         const double DotProduct( const Type & vet1, const Type & vet2);
         Vector operator /(Vector& vector, double value);
+        Vector operator +(Vector& vector1, Vector& vector2);
 
 
     double operator*(Point lhs, Point rhs);
@@ -49,12 +61,14 @@ namespace geometry{
     //right side is the direction of the normal 
     //vector. 1 = right and -1 = left
     int WhichSide(Point dot, Straight line);
+    bool NormalSide(const Point& dot,const Straight& line);
     //generate a vector form two points
     Vector GenVector(Point point1, Point point2);
     //find the neares neighbor from a list of points
     Point& NearestNeighbor(std::vector<Point*> list, const Point& point);
     //Return the points that are not on the same side of the normal vector
-    std::vector<Point*> OnLeftSide(Straight& line, std::vector<Point*> list);
+    std::vector<Point*> OnLeftSide(Straight& line, std::vector<Point*>& list);
+    std::vector<Point*> OnNormalSide(Straight& line, std::vector<Point*>& list);
      //return a vector of pointer
     std::vector<Point*> ToPointers(std::vector<Point>& list);
 }

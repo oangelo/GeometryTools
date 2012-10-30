@@ -33,6 +33,9 @@ TEST(geometry, Normal_Vector) {
     Point point({2, 1});
     Point normal = NormalVector({2, 1});
     EXPECT_EQ(point * normal, 0.0);
+    Point point2(NormalVector({0, -1}));
+    EXPECT_EQ(point2[0], 1);
+    EXPECT_EQ(point2[1], 0);
     
 }
 
@@ -48,6 +51,44 @@ TEST(geometry, Line_meeting_point) {
     EXPECT_EQ((line2 == line3)[1], 2);
     //Parallel lines should not have a meeting point
     EXPECT_EQ((line2 == line2).size(), 0);
+
+    Straight ref({1, 1}, {0, 0}); 
+    Straight side({0, 1}, {0, 0}); 
+    EXPECT_EQ((ref == side).size(), 2);
+    EXPECT_EQ((ref == side)[0], 0);
+    EXPECT_EQ((ref == side)[1], 0);
+
+}
+
+TEST(geometry, Line_meeting_point2) {
+    Straight ref({0, 1}, {0, 0.5}); 
+    Straight side({1, 0}, {0.5, 0}); 
+    EXPECT_EQ((ref == side).size(), 2);
+    EXPECT_EQ((ref == side)[0], 0.5);
+    EXPECT_EQ((ref == side)[1], 0.5);
+}
+
+TEST(geometry, Line_meeting_point3) {
+    Straight ref({0, 1}, {0, 0.5}); 
+    Straight side({1, 0}, {-0.5, 0}); 
+    EXPECT_EQ((ref == side).size(), 2);
+    EXPECT_EQ((ref == side)[0], -0.5);
+    EXPECT_EQ((ref == side)[1], 0.5);
+}
+
+TEST(geometry, Line_meeting_point4) {
+    Straight ref({-1, 0}, {-0.5, 0.0}); 
+    Straight side({1, 0}, {0.5, 0.0}); 
+    EXPECT_EQ((ref == side).size(), 0);
+}
+
+TEST(geometry, Line_meeting_point5) {
+
+    Straight line({cos(45 * M_PI / 180.0), sin(45 * M_PI / 180.0)}, {0.5, 0.5}); 
+    Straight side({1, 0}, {0.5, 0.0}); 
+    std::cout << (line == side) << std::endl;
+    EXPECT_EQ((line == side)[0], 0.5);
+    EXPECT_EQ((line == side)[1], 0.5);
 }
 
 TEST(geometry, vector_from_points) {
@@ -96,6 +137,47 @@ TEST(geometry, Line_side) {
     EXPECT_EQ(result.size(), 2);
     EXPECT_TRUE(result[0] == &points[2]);
     EXPECT_TRUE(result[1] == &points[3]);
+
+    std::vector<Point> points2;
+
+    points2.push_back({0, 0});
+
+    points2.push_back({0, 1});
+    points2.push_back({0, 2});
+
+    points2.push_back({0, -1});
+    points2.push_back({0, -2});
+
+    points2.push_back({1, 0});
+    points2.push_back({2, 0});
+
+    points2.push_back({-1, 0});
+    points2.push_back({-2, 0});
+
+    std::vector<Point*> pointers2(ToPointers(points2));
+    Straight line2({0, 1}, {0, 0.5});
+    Straight line3({0, -1}, {0, -0.5});
+    auto result2(OnLeftSide(line2, pointers2));
+    EXPECT_EQ(result2.size(), 7);
+    auto result3(OnLeftSide(line3, result2));
+    EXPECT_EQ(result3.size(), 5);
+
+}
+
+TEST(geometry, normal_Line_side) {
+    Straight line({-1,-1}, {0,0});
+    std::vector<Point> points;
+    points.push_back({1, 1});
+    points.push_back({1, 2});
+    points.push_back({-2, -2});
+    points.push_back({-3, 1});
+    std::vector<Point*> pointers(ToPointers(points));
+    auto result(OnNormalSide(line, pointers));
+    EXPECT_EQ(result.size(), 2);
+    EXPECT_TRUE(result[0] == &points[2]);
+    EXPECT_TRUE(result[1] == &points[3]);
+
+
 }
 
 TEST(geometry, Vector_dividion) {
@@ -104,6 +186,20 @@ TEST(geometry, Vector_dividion) {
     EXPECT_EQ(div[0], 1);
     EXPECT_EQ(div[1], 1);
 }
+
+TEST(geometry, Vector_sum) {
+    Vector vector({2, 2});
+    Vector div(vector + vector);
+    EXPECT_EQ(div[0], 4);
+    EXPECT_EQ(div[1], 4);
+}
+
+TEST(geometry, fstream_vector_print) {
+    Vector vector({2, 2});
+    std::cout << vector << std::endl ;
+}
+
+
 
 int main(int argc, char *argv[])
 {

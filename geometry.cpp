@@ -9,6 +9,14 @@ Vector operator /(Vector& vector, double value) {
     return result;
 }
 
+Vector operator +(Vector& vector1, Vector& vector2) { 
+    Vector result;
+    for (size_t i = 0; i < vector1.size(); ++i) {
+        result.push_back(vector1[i] + vector2[i]);
+    }
+    return result;
+}
+
 template <class Type>
 const double DotProduct( const Type & vet1, const Type & vet2){
     double vet_aux=0;
@@ -22,7 +30,7 @@ double operator*(Point lhs, Point rhs) {
    return DotProduct(lhs, rhs); 
 }
 
-//for 2D only
+//for 2D only, counterclock
 Point NormalVector(Point point) {
     if(point.size() == 2) {
         double y = point[0];
@@ -75,33 +83,68 @@ Point Straight::operator==(const Straight & rhs) const {
     Point director1 =  NormalVector(rhs.normal_vector);
     Point director2 =  NormalVector(this->normal_vector);
 
+    //std::cerr << "dot line meet "<<  director2 * rhs.get_normal() << std::endl;
     //Case the lines are parallel
-    if((director2 * rhs.get_normal()) == 0.0)
+    if(fabs(director2 * rhs.get_normal()) < 0.00000001){
+        std::cerr << "linhas paralelas" << std::endl;
         return Point();
-
-    double a = director1[0]; double c = director1[1];
-    double b = rhs.point[0]; double d = rhs.point[1];
-
-    double _a = director2[0]; double _c = director2[1];
-    double _b = this->point[0]; double _d = this->point[1];
-
-    if(a + c > 0) {
-        double t = ((_d - d) + (_b - b))  / (a + c);
-        return {a * t + b, c * t + d};
-    }else {
-        double t = ((d - _d) + (b - _b)) / (_a + _c);
-        return {_a * t + _b, _c * t + _d};
     }
+
+    double d0 = director1[0]; double d1 = director1[1];
+    double p0 = rhs.point[0]; double p1 = rhs.point[1];
+    double _d0 = director2[0]; double _d1 = director2[1];
+    double _p0 = this->point[0]; double _p1 = this->point[1];
+    
+//*
+    if(fabs(d0) < 0.000000001 and fabs(_d0) > 0.000000001) {
+        double _t = (p0 - _p0) / _d0;
+        double x = _d0 * _t + _p0;
+        double y = _d1 * _t + _p1;
+        return {x, y};
+ 
+    }
+    if(fabs(_d0) < 0.000000001 and fabs(d0) > 0.000000001) {
+        double t = (_p0 - p0) / d0;
+        double x = d0 * t + p0;
+        double y = d1 * t + p1;
+        return {x, y};
+    }
+    if(fabs(d1) < 0.000000001 and fabs(_d1) > 0.000000001) {
+        double _t = (p1 - _p1) / _d1;
+        double x = _d0 * _t + _p0;
+        double y = _d1 * _t + _p1;
+        return {x, y};
+ 
+    }
+    if(fabs(_d1) < 0.000000001 and fabs(d1) > 0.000000001) {
+        double t = (_p1 - p1) / d1;
+        double x = d0 * t + p0;
+        double y = d1 * t + p1;
+        return {x, y};
+    }
+
+        double t = (_d0 * (p1 - _p1) - _d1 * (p0 - _p0))  / (_d1 * d0 + d1 * _d0);
+        double x = d0 * t + p0;
+        double y = d1 * t + p1;
+        return {x, y};
+//*/
 }
 
 
 int WhichSide(Point dot, Straight line) {
-    
     double product = GenVector(line.get_point(), dot) * line.get_normal(); 
     if(product > 0)
         return 1; 
     else
         return -1;
+}
+
+bool NormalSide(const Point& dot, const Straight& line) {
+    double product = GenVector(line.get_point(), dot) * line.get_normal(); 
+    if(product > 0)
+        return true; 
+    else
+        return false;
 }
 
 Vector GenVector(Point point1, Point point2) {
@@ -134,10 +177,18 @@ std::vector<Point*> ToPointers(std::vector<Point>& list) {
    return(pointers); 
 }
 
-std::vector<Point*> OnLeftSide(Straight& line, std::vector<Point*> list) {
+std::vector<Point*> OnLeftSide(Straight& line, std::vector<Point*>& list) {
     std::vector<Point*> points;
     for(auto iten(list.begin()); iten < list.end(); ++iten)
         if(WhichSide(**iten, line) == -1 )
+            points.push_back(*iten);
+    return points;
+}
+
+std::vector<Point*> OnNormalSide(Straight& line, std::vector<Point*>& list) {
+    std::vector<Point*> points;
+    for(auto iten(list.begin()); iten < list.end(); ++iten)
+        if(NormalSide(*(*iten), line))
             points.push_back(*iten);
     return points;
 }
