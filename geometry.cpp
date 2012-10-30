@@ -98,6 +98,7 @@ Point Straight::operator==(const Straight & rhs) const {
     Point director1 =  NormalVector(rhs.normal_vector);
     Point director2 =  NormalVector(this->normal_vector);
 
+    std::cout << "ddot "  << director1 * director2 << std::endl;
     //std::cerr << "dot line meet "<<  director2 * rhs.get_normal() << std::endl;
     //Case the lines are parallel
     if(fabs(director2 * rhs.get_normal()) < epsilon){
@@ -138,7 +139,7 @@ Point Straight::operator==(const Straight & rhs) const {
         return {x, y};
     }
 
-        double t = (_d0 * (p1 - _p1) - _d1 * (p0 - _p0))  / (_d1 * d0 + d1 * _d0);
+        double t = (_d0 * (p1 - _p1) - _d1 * (p0 - _p0))  / (_d1 * d0 - d1 * _d0);
         double x = d0 * t + p0;
         double y = d1 * t + p1;
         return {x, y};

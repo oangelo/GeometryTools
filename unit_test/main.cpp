@@ -98,6 +98,15 @@ TEST(geometry, Line_meeting_point5) {
     EXPECT_EQ((line == side)[1], 0.5);
 }
 
+TEST(geometry, Line_meeting_point6) {
+
+    Straight line({-1, 1}, {0.5, 0.5}); 
+    Straight side({-1, -1}, {0.0, 1.0}); 
+    std::cout << (line == side) << std::endl;
+    EXPECT_EQ((line == side)[0], 0.5);
+    EXPECT_EQ((line == side)[1], 0.5);
+}
+
 TEST(geometry, vector_from_points) {
     Vector vec = GenVector({2, 2}, {-1, -1});
     EXPECT_EQ(vec[0], -3);
