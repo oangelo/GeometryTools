@@ -187,6 +187,20 @@ TEST(geometry, normal_Line_side) {
 
 }
 
+TEST(geometry, DivideDots) {
+    Straight line({-1,-1}, {0,0});
+    std::vector<Point> points;
+    points.push_back({1, 1});
+    points.push_back({1, 2});
+    points.push_back({-2, -2});
+    points.push_back({-3, 1});
+    std::vector<Point*> pointers(ToPointers(points));
+    std::vector<Point*> result1;
+    std::vector<Point*> result2;
+    DivideDots(line, pointers, result1, result2);
+  //  EXPECT_EQ(result1.size() + result2.size(), pointers.size());
+}
+
 TEST(geometry, Vector_dividion) {
     Vector vector({2, 2});
     Vector div(vector / 2.0);

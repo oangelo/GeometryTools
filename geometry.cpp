@@ -2,6 +2,8 @@
 
 namespace geometry{
 
+
+
 Vector operator /(Vector& vector, double value) { 
     Vector result;
     for(auto iten(vector.begin()); iten < vector.end(); ++iten)
@@ -25,6 +27,7 @@ const double DotProduct( const Type & vet1, const Type & vet2){
     }
     return(vet_aux);
 }
+
 
 double operator*(Point lhs, Point rhs) {
    return DotProduct(lhs, rhs); 
@@ -85,6 +88,8 @@ std::vector<double> Versor(const Type & ac1,const Type & ac2){
     return distance;
 }
 
+
+
 Straight::Straight(Vector normal_vector, Point point):normal_vector(normal_vector), point(point) {};
 const Point& Straight::get_point() const {return point;};
 const Vector& Straight::get_normal() const {return normal_vector;};
@@ -95,7 +100,7 @@ Point Straight::operator==(const Straight & rhs) const {
 
     //std::cerr << "dot line meet "<<  director2 * rhs.get_normal() << std::endl;
     //Case the lines are parallel
-    if(fabs(director2 * rhs.get_normal()) < 0.00000001){
+    if(fabs(director2 * rhs.get_normal()) < epsilon){
         std::cerr << "linhas paralelas" << std::endl;
         return Point();
     }
@@ -106,27 +111,27 @@ Point Straight::operator==(const Straight & rhs) const {
     double _p0 = this->point[0]; double _p1 = this->point[1];
     
 //*
-    if(fabs(d0) < 0.000000001 and fabs(_d0) > 0.000000001) {
+    if(fabs(d0) < epsilon and fabs(_d0) > epsilon) {
         double _t = (p0 - _p0) / _d0;
         double x = _d0 * _t + _p0;
         double y = _d1 * _t + _p1;
         return {x, y};
  
     }
-    if(fabs(_d0) < 0.000000001 and fabs(d0) > 0.000000001) {
+    if(fabs(_d0) < epsilon and fabs(d0) > epsilon) {
         double t = (_p0 - p0) / d0;
         double x = d0 * t + p0;
         double y = d1 * t + p1;
         return {x, y};
     }
-    if(fabs(d1) < 0.000000001 and fabs(_d1) > 0.000000001) {
+    if(fabs(d1) < epsilon and fabs(_d1) > epsilon) {
         double _t = (p1 - _p1) / _d1;
         double x = _d0 * _t + _p0;
         double y = _d1 * _t + _p1;
         return {x, y};
  
     }
-    if(fabs(_d1) < 0.000000001 and fabs(d1) > 0.000000001) {
+    if(fabs(_d1) < epsilon and fabs(d1) > epsilon) {
         double t = (_p1 - p1) / d1;
         double x = d0 * t + p0;
         double y = d1 * t + p1;
@@ -201,6 +206,14 @@ std::vector<Point*> OnNormalSide(Straight& line, std::vector<Point*>& list) {
         if(NormalSide(*(*iten), line))
             points.push_back(*iten);
     return points;
+}
+
+void DivideDots(Straight& line, std::vector<Point*>& list, std::vector<Point*>& result1, std::vector<Point*>& result2) {
+    for(auto iten(list.begin()); iten < list.end(); ++iten)
+        if(NormalSide(*(*iten), line))
+            result1.push_back(*iten);
+        else
+            result2.push_back(*iten);
 }
 
 } //namespace geometry
