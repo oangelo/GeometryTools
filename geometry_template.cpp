@@ -31,7 +31,7 @@ double EuclideanDistance(const Type & v1,const Type & v2){
 }
 
 template <class Type>
-std::vector<double> Versor(const Type & ac1,const Type & ac2){
+Vector Versor(const Type & ac1,const Type & ac2){
     double e_distance = EuclideanDistance(ac1,ac2);
     std::vector<double> v1(ac1.get_position()), v2(ac2.get_position());
     std::vector<double> distance(v1.size());   
@@ -40,6 +40,24 @@ std::vector<double> Versor(const Type & ac1,const Type & ac2){
                 element = (element / e_distance);
             });
     return distance;
+}
+
+template <class Type>
+Vector Rotate(const Type& ac1, double angle){
+    Vector new_vec(2); 
+    angle = angle * M_PI / 180;
+    new_vec[0] = (ac1[0] * cos(angle) - ac1[1] * sin(angle));
+    new_vec[1] = (ac1[0] * sin(angle) + ac1[1] * cos(angle));
+    return new_vec;
+}
+
+template <class T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) 
+{ 
+    os << "(";
+    std::copy(v.begin(), v.end() - 1, std::ostream_iterator<T>(os, ", "));
+    std::copy(v.end() - 1, v.end(), std::ostream_iterator<T>(os));
+    return os<<")";
 }
 
 

@@ -23,6 +23,15 @@ TEST(geometry, operator_multiply) {
     EXPECT_EQ(dot, 0);
 }
 
+TEST(geometry, rotate) {
+    std::vector<double> vec1({1,0});
+    double dot = vec1 * Rotate(vec1, 90);
+    EXPECT_NEAR(dot, 0, 0.00000001);
+    auto vet2(Rotate(vec1, 45));
+    EXPECT_NEAR(vet2[0], sqrt(2) / 2, 0.00000001);
+    EXPECT_NEAR(vet2[1], sqrt(2) / 2, 0.00000001);
+}
+
 TEST(geometry, Left_right_of_the_line) {
     Straight line({0,1}, {0,0});
     EXPECT_EQ(WhichSide({1,0}, line), -1);

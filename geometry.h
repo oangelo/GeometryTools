@@ -35,11 +35,15 @@ namespace geometry{
             Point point;
     };
 
-
+    template <class T>
+        std::ostream& operator<<(std::ostream& os, const std::vector<T>& v); 
     template <class Type>
         double EuclideanDistance(const Type & ac1,const Type & ac2);
     template <class Type>
-        std::vector<double> Versor(const Type & ac1,const Type & ac2);
+        Vector Rotate(const Type & ac1,double angle);
+    template <class Type>
+        Vector Versor(const Type & ac1,const Type & ac2);
+ 
     template <class Type>
         bool InSight(const Type & point1, const Type & point2, std::vector<double> &direction, double cos_angle);
     template <class Type>
@@ -68,19 +72,12 @@ namespace geometry{
     Point& NearestNeighbor(std::vector<Point*> list, const Point& point);
     //Return the points that are not on the same side of the normal vector
     std::vector<Point*> OnLeftSide(Straight& line, std::vector<Point*>& list);
+    //Return the points that are on the same side of the normal vector
     std::vector<Point*> OnNormalSide(Straight& line, std::vector<Point*>& list);
+    //divide a set of points in to sets by a line
     void DivideDots(Straight& line, std::vector<Point*>& list, std::vector<Point*>& result1, std::vector<Point*>& result2);
     //return a vector of pointer
     std::vector<Point*> ToPointers(std::vector<Point>& list);
-
-    template <class T>
-        std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) 
-        { 
-            os << "(";
-            std::copy(v.begin(), v.end() - 1, std::ostream_iterator<T>(os, ", "));
-            std::copy(v.end() - 1, v.end(), std::ostream_iterator<T>(os));
-            return os<<")";
-        }
 
     #include "geometry_template.cpp"
 
