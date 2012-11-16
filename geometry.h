@@ -82,7 +82,9 @@ namespace geometry{
             return os<<")";
         }
 
+    #include "geometry_template.cpp"
+
 }
-//#include "geometry.cpp"
+
 
 #endif /* geometry_H */
