@@ -9,13 +9,12 @@ const double DotProduct( const Type & vet1, const Type & vet2){
 
 template <class Type>
 bool InSight(const Type & point1, const Type & point2, std::vector<double> & direction, double cos_angle){
-//This function should receive cos(angle_of_vision / 2.0)
     std::vector<double> vet_ag(Versor(point1,point2));
     double dot = DotProduct(vet_ag, direction);
     if(dot > (cos_angle)){
-        return(1);
+        return(true);
     }else{
-        return(0);
+        return(false);
     }
 }
 
@@ -33,7 +32,7 @@ double EuclideanDistance(const Type & v1,const Type & v2){
 template <class Type>
 Vector Versor(const Type & ac1,const Type & ac2){
     double e_distance = EuclideanDistance(ac1,ac2);
-    std::vector<double> v1(ac1.get_position()), v2(ac2.get_position());
+    std::vector<double> v1(ac1), v2(ac2);
     std::vector<double> distance(v1.size());   
     std::transform(v2.begin(),v2.end(),v1.begin(),distance.begin(),std::minus<double>());
     std::for_each(distance.begin(),distance.end(), [e_distance] (double &element){

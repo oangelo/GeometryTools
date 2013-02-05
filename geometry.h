@@ -49,7 +49,10 @@ namespace geometry{
     template <class Type>
         const double DotProduct( const Type & vet1, const Type & vet2);
     Vector operator /(Vector& vector, double value);
+    Vector operator *(double value, Vector& vector);
     Vector operator +(Vector& vector1, Vector& vector2);
+    Vector operator -(Vector& vector1, Vector& vector2);
+    bool operator == (Vector& vector1, Vector& vector2);
     template <class T>
         std::ostream& operator<<(std::ostream& os, const std::vector<T>& v);
 

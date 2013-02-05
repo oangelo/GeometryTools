@@ -11,6 +11,13 @@ Vector operator /(Vector& vector, double value) {
     return result;
 }
 
+Vector operator *(double value, Vector& vector) { 
+    Vector result;
+    for(auto iten(vector.begin()); iten < vector.end(); ++iten)
+           result.push_back(value * (*iten)); 
+    return result;
+}
+
 Vector operator +(Vector& vector1, Vector& vector2) { 
     Vector result;
     for (size_t i = 0; i < vector1.size(); ++i) {
@@ -19,8 +26,22 @@ Vector operator +(Vector& vector1, Vector& vector2) {
     return result;
 }
 
+Vector operator -(Vector& vector1, Vector& vector2) { 
+    Vector result;
+    for (size_t i = 0; i < vector1.size(); ++i) {
+        result.push_back(vector1[i] - vector2[i]);
+    }
+    return result;
+}
 
 
+bool operator ==(Vector& vector1, Vector& vector2) { 
+    for (size_t i = 0; i < vector1.size(); ++i) {
+        if(fabs(vector1[i] - vector2[i]) > 0.00001);
+            return false;
+    }
+    return true;
+}
 
 double operator*(Point lhs, Point rhs) {
    return DotProduct(lhs, rhs); 
