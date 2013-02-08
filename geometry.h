@@ -43,9 +43,11 @@ namespace geometry{
         Vector Rotate(const Type & ac1,double angle);
     template <class Type>
         Vector Versor(const Type & ac1,const Type & ac2);
+    template <class Type>
+        Vector Versor(const Type & ac1,const Type & ac2, double euclidean_distance);
  
     template <class Type>
-        bool InSight(const Type & point1, const Type & point2, std::vector<double> &direction, double cos_angle);
+        bool InSight(const Type & point1, const Type & point2, const Type& direction, double cos_angle);
     template <class Type>
         const double DotProduct( const Type & vet1, const Type & vet2);
     Vector operator /(Vector& vector, double value);
